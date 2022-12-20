@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hot and Cold</title>
+    <script>
+
+        function temperature() 
+        {
+            let guess = 50;
+            let guesses = 5;
+            let randomNumber = parseInt(Math.random() * 100 + 1);
+            let tryGuess = true;
+            guessOutput = document.getElementById("guessPlayer");
+            guessesOutput = document.getElementById("guessesLeft");
+            tableOutput = document.getElementById("log");
+            display();
+        }
+
+        function display() 
+        {
+            guessOutput.innerHTML = guess;
+            guessesOutput.innerHTML = guesses;
+        }
+
+        function add(num) 
+        {
+            if (guess + num <= 100 && tryGuess) 
+            {
+                guess += num;
+                display();
+            }
+        }
+
+        function remove(num) 
+        {
+            if (guess - num >= 1 && tryGuess) 
+            {
+                guess -= num;
+                display();
+            }
+        }
+
+        function reset() 
+        {
+            guess = 50;
+            guesses = 5;
+            randomNumber = parseInt(Math.random() * 100 + 1);
+            tryGuess = true;
+
+            tableOutput.innerHTML = "<tr><th>Guess</th><th>Response</th></tr>"
+
+            display();
+        }
+
+        function addRow(guess, response) 
+        {
+            tableOutput.innerHTML += "<tr><th>" + guess + "</th><th>" + response + "</th></tr>"
+        }
+
+        function commit() 
+        {
+            if (tryGuess)
+            {
+                let difference = Math.abs(randomNumber - guess);
+                if (difference == 0) 
+                {
+                    tryGuess = false;
+                    addRow(guess, "Correct!")
+                }
+
+                else if (difference <= 5) 
+                {
+                    addRow(guess, "Very Hot")
+                }
+
+                else 
+                {
+                    guesses--;
+                    if (difference <= 8) 
+                    {
+                        addRow(guess, "Hot")
+                    }
+
+                    else if (difference <= 15) 
+                    {
+                        addRow(guess, "Very Warm")
+                    }
+
+                    else if (difference <= 20) 
+                    {
+                        addRow(guess, "Warm")
+                    }
+
+                    else if (difference <= 30) 
+
+                    {
+                        addRow(guess, "Cool")
+                    }
+
+                    else if (difference <= 40) 
+                    {
+                        addRow(guess, "Very Cool")
+                    }
+
+                    else if (difference <= 55) 
+                    {
+                        addRow(guess, "Cold")
+                    }
+
+                    else 
+                    {
+                        addRow(guess, "Very Cold")
+                    }
+
+                    display();
+                }
+
+                if (guesses == 0) 
+                {
+                    tryGuess = false;
+                }
+            }
+            
+        }
+    </script>
+    <link href="stylesheet.css" rel="stylesheet">
+</head>
+
+    <body onload="temperature();">
+        <main>
+            <h1><span id="guessPlayer">50</span></h1>
+            <h2><span id="guessesLeft">5</span> Guesses Left</h2>
+
+            <div>
+                <button onclick="add(1);">Add 1</button>
+                <button onclick="add(5);">Add 5</button>
+                <button onclick="add(10);">Add 10</button>
+                <button onclick="add(25);">Add 25</button>
+            </div>
+            <div>
+                <button onclick="remove(1);">Remove 1</button>
+                <button onclick="remove(5);">Remove 5</button>
+                <button onclick="remove(10);">Remove 10</button>
+                <button onclick="remove(25);">Remove 25</button>
+            </div>
+            <div>
+                <button onclick="commit();">Commit</button>
+                <button onclick="reset();">Reset</button>
+            </div>
+        </main>
+        
+        <br>
+
+        <table id="log">
+            <tr>
+                <th>Guess</th>
+                <th>Response</th>
+            </tr>
+        </table>
+    </body>
+</html>
